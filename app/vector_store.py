@@ -1,6 +1,7 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
+import os
 
 
 def create_vector_store(text: str):
@@ -11,9 +12,9 @@ def create_vector_store(text: str):
 
     chunks = splitter.split_text(text)
 
-    # 🔥 MUCH lighter model (Render Free compatible)
-    embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/paraphrase-MiniLM-L3-v2"
+    embeddings = HuggingFaceInferenceAPIEmbeddings(
+        api_key=os.getenv("HF_API_KEY"),
+        model_name="sentence-transformers/all-MiniLM-L6-v2"
     )
 
     vectorstore = FAISS.from_texts(chunks, embeddings)
