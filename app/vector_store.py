@@ -11,9 +11,9 @@ def create_vector_store(text: str):
 
     chunks = splitter.split_text(text)
 
-    # ✅ FREE local embeddings (NO API, NO LIMITS)
+    # 🔥 MUCH lighter model (Render Free compatible)
     embeddings = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/all-MiniLM-L6-v2"
+        model_name="sentence-transformers/paraphrase-MiniLM-L3-v2"
     )
 
     vectorstore = FAISS.from_texts(chunks, embeddings)
