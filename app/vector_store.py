@@ -1,8 +1,6 @@
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
-import os
-
+from langchain_community.embeddings import HuggingFaceEmbeddings
+from langchain_community.vectorstores import Chroma
 
 def create_vector_store(text: str):
     splitter = RecursiveCharacterTextSplitter(
@@ -12,10 +10,14 @@ def create_vector_store(text: str):
 
     chunks = splitter.split_text(text)
 
-    embeddings = HuggingFaceInferenceAPIEmbeddings(
-        api_key=os.getenv("HF_API_KEY"),
+    embeddings = HuggingFaceEmbeddings(
         model_name="sentence-transformers/all-MiniLM-L6-v2"
     )
 
-    vectorstore = FAISS.from_texts(chunks, embeddings)
+    vectorstore = Chroma.from_texts(
+        texts=chunks,
+        embedding=embeddings,
+        persist_directory="./chroma_db"
+    )
+
     return vectorstore

@@ -1,9 +1,9 @@
 fastapi
 uvicorn
-python-multipart
 pypdf
 langchain
 langchain-community
 langchain-text-splitters
-huggingface-hub
+chromadb
+sentence-transformers
 groq
